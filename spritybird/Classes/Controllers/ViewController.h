@@ -7,6 +7,7 @@
 //
 
 #import "Scene.h"
+#import <MyoKit/MyoKit.h>
 
 @interface ViewController : UIViewController<SceneDelegate>
 

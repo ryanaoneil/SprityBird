@@ -50,7 +50,8 @@ static bool wasted = NO;
     
     [self createBackground];
     [self createFloor];
-    [self createScore];
+    
+    //[self createScore];
     [self createObstacles];
     [self createBird];
     
@@ -99,6 +100,7 @@ static bool wasted = NO;
     [self addChild:floor];
 }
 
+//Create a new bird
 - (void)createBird
 {
     bird = [BirdNode new];
@@ -107,6 +109,8 @@ static bool wasted = NO;
     [self addChild:bird];
 }
 
+
+//Creating Obstacles
 - (void) createObstacles
 {
     // Calculate how many obstacles we need, the less the better

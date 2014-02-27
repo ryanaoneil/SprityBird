@@ -18,6 +18,7 @@
 @property (weak,nonatomic) IBOutlet UIImageView * medalImageView;
 @property (weak,nonatomic) IBOutlet UILabel * currentScore;
 @property (weak,nonatomic) IBOutlet UILabel * bestScoreLabel;
+@property (strong, nonatomic) IBOutlet TLMPose * currentPose;
 
 @end
 
@@ -46,6 +47,12 @@
     self.gameOverView.transform = CGAffineTransformMakeScale(.9, .9);
     [self.gameView presentScene:scene];
     
+    
+    //myo
+    [[NSNotificationCenter defaultCenter] addObserver:self
+                                             selector:@selector(didReceivePoseChange:)
+                                                 name:TLMMyoDidReceivePoseChangedNotification
+                                               object:nil];
 }
 
 
@@ -126,6 +133,52 @@
     [animation setToValue:[NSValue valueWithCGPoint:
                            CGPointMake([self.view  center].x + 4.0f, [self.view  center].y)]];
     [[self.view layer] addAnimation:animation forKey:@"position"];
+}
+
+
+#pragma mark Myo Commands
+
+// Pushing it on an existing navigation controller
+- (void)pushMyoSettings {
+    TLMSettingsViewController *settings = [[TLMSettingsViewController alloc] init];
+    
+    [self.navigationController pushViewController:settings animated:YES];
+}
+
+- (void)presentTrainer {
+    TLMMyo *device = [[[TLMHub sharedHub] myoDevices] firstObject];
+    if(device) {
+        [device presentTrainerFromViewController:self];
+    }
+}
+
+- (void)didReceivePoseChange:(NSNotification*)notification {
+    TLMPose *pose = notification.userInfo[kTLMKeyPose];
+    
+    //TODO: do something with the pose object.
+}
+
+- (void)didReceivePoseChange:(NSNotification *)notification {
+    // Retrieve the pose from the NSNotification's userInfo with the kTLMKeyPose key.
+    TLMPose *pose = notification.userInfo[kTLMKeyPose];
+    self.currentPose = pose;
+    
+    // Handle the cases of the TLMPoseType enumeration, and change the color of helloLabel based on the pose we receive.
+    switch (pose.type) {
+        case TLMPoseTypeNone:
+            break;
+        case TLMPoseTypeFist:
+            [self Start];
+            break;
+        case TLMPoseTypeWaveIn:
+            break;
+        case TLMPoseTypeWaveOut:
+            break;
+        case TLMPoseTypeFingersSpread:
+            break;
+        case TLMPoseTypeTwistIn:
+            break;
+    }
 }
 
 @end

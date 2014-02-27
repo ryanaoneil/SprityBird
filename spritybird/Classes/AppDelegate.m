@@ -7,12 +7,14 @@
 //
 
 #import "AppDelegate.h"
+#import <MyoKit/MyoKit.h>
 
 @implementation AppDelegate
 
 - (BOOL)application:(UIApplication *)application didFinishLaunchingWithOptions:(NSDictionary *)launchOptions
 {
-    
+    //Adding the myo
+    [TLMHub sharedHub];
     return YES;
 }
 							
